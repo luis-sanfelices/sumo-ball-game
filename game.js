@@ -47,13 +47,23 @@ Game.prototype._update = function() {
   if (this.ball2.outOfTheRing(this.radius)) {
     alert("green wins")
   }
-  if (this.ball1.ballColision(this.ball2)){
-    console.log("han chocado")
+  if (!this.ball1 && this.ball1.ballColision(this.ball2)){
+    this.ball1.collision = true;
+    this.ball2.collision = true;
+    this.ball1.collisionSpeed(this.ball2);
+    this.ball2.collisionSpeed(this.ball1);
+    this.ball1.speedAfterCollision();
+    this.ball2.speedAfterCollision();
+  } else {
+    this.ball1.collision = false;
+    this.ball2.collision = false;
   }
-  this._drawBall(this.ball1);
-  this._drawBall(this.ball2);
+  this.ball1.move();
+  this.ball2.move();
   this.ball1.changeSpeed(this.player1Controls);
   this.ball2.changeSpeed(this.player2Controls);
+  this._drawBall(this.ball1);
+  this._drawBall(this.ball2);
   window.requestAnimationFrame(this._update.bind(this));
 };
 
