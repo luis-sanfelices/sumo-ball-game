@@ -48,32 +48,32 @@ Ball.prototype._distanceToBall = function(ball) {
 }
 
 Ball.prototype.ballColision = function(ball) {
-  return this._distanceToBall(ball) <= 2.2*this.radius;
+  return this._distanceToBall(ball) <= 2*this.radius;
 }
 
 Ball.prototype._collisionXSpeed = function(ball) {
   var distance = 0;  
   if (this.collision && ball.xSpeed != 0){
-    distance = Math.abs(ball.yPos - this.yPos);
+    distance = ball.yPos - this.yPos;
     var anguloThis = Math.asin(distance/(2*this.radius));
     var anguloBall = (Math.PI/2) - anguloThis;
-    this.xCollisionSpeed += ball.xSpeed*Math.cos(anguloThis)*Math.cos(anguloThis);
-    this.yCollisionSpeed += ball.xSpeed*Math.cos(anguloThis)*Math.sin(anguloThis);
-    ball.xCollisionSpeed += ball.xSpeed*Math.sin(anguloThis)*Math.cos(anguloBall);
-    ball.yCollisionSpeed += ball.xSpeed*Math.sin(anguloThis)*Math.sin(anguloBall);
+    this.xCollisionSpeed += ball.xSpeed*Math.cos(anguloThis)*Math.sin(anguloThis);
+    this.yCollisionSpeed += ball.xSpeed*Math.cos(anguloThis)*Math.cos(anguloThis);
+    ball.xCollisionSpeed += ball.xSpeed*Math.sin(anguloThis)*Math.sin(anguloBall);
+    ball.yCollisionSpeed += ball.xSpeed*Math.sin(anguloThis)*Math.cos(anguloBall);
   }
 }
 
 Ball.prototype._collissionYSpeed = function(ball) {
   var distance = 0;  
   if (this.collision && ball.ySpeed != 0){
-    distance = distance = Math.abs(ball.xPos - this.xPos);
+    distance = ball.xPos - this.xPos;
     var anguloThis = Math.asin(distance/(2*this.radius));
     var anguloBall = (Math.PI/2) - anguloThis;
-    this.yCollisionSpeed += ball.ySpeed*Math.cos(anguloThis)*Math.sin(anguloThis);
-    this.xCollisionSpeed += ball.ySpeed*Math.cos(anguloThis)*Math.cos(anguloThis);
-    ball.xCollisionSpeed += ball.ySpeed*Math.sin(anguloThis)*Math.cos(anguloBall);
-    ball.yCollisionSpeed += ball.ySpeed*Math.sin(anguloThis)*Math.sin(anguloBall);
+    this.yCollisionSpeed += ball.ySpeed*Math.cos(anguloThis)*Math.cos(anguloThis);
+    this.xCollisionSpeed += ball.ySpeed*Math.cos(anguloThis)*Math.sin(anguloThis);
+    ball.xCollisionSpeed += ball.ySpeed*Math.sin(anguloThis)*Math.sin(anguloBall);
+    ball.yCollisionSpeed += ball.ySpeed*Math.sin(anguloThis)*Math.cos(anguloBall);
   }
 }
 
