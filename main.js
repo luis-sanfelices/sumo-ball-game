@@ -4,9 +4,9 @@ $(document).ready(function() {
     var ctx = canvas.getContext("2d");
   
     game = new Game({
-        ball1: new Ball({radius:20,xPos:0,yPos:-100, color:"green"}),
-        ball2: new Ball({radius:20,xPos:0,yPos:100, color:"blue"}),
-        radius: 250,
+        ball1: new Ball({radius:25,xPos:0,yPos:-300, color:"green"}),
+        ball2: new Ball({radius:25,xPos:0,yPos:300, color:"blue"}),
+        radius: 400,
         ctx: ctx
     });
   
