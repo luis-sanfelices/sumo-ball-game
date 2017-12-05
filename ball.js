@@ -52,28 +52,40 @@ Ball.prototype.ballColision = function(ball) {
 }
 
 Ball.prototype._collisionXSpeed = function(ball) {
-  var distance = 0;  
+  var distance = 0;
+  var changeDirection = this._yCuadrantCollision(ball);  
   if (this.collision && ball.xSpeed != 0){
-    distance = ball.yPos - this.yPos;
-    var anguloThis = Math.asin(distance/(2*this.radius));
-    var anguloBall = (Math.PI/2) - anguloThis;
-    this.xCollisionSpeed += ball.xSpeed*Math.cos(anguloThis)*Math.sin(anguloThis);
-    this.yCollisionSpeed += ball.xSpeed*Math.cos(anguloThis)*Math.cos(anguloThis);
-    ball.xCollisionSpeed += ball.xSpeed*Math.sin(anguloThis)*Math.sin(anguloBall);
-    ball.yCollisionSpeed += ball.xSpeed*Math.sin(anguloThis)*Math.cos(anguloBall);
+    if ((this._xCuadrantCollision(ball) === -1 && ball.xSpeed < 0) || 
+        (this._xCuadrantCollision(ball) === 1 && ball.xSpeed > 0)) {
+          ball.xCollisionSpeed += ball.xSpeed;
+    } else {
+      distance = Math.abs(ball.yPos - this.yPos);
+      var anguloThis = Math.asin(distance/(2*this.radius));
+      var anguloBall = (Math.PI/2) - anguloThis;
+      this.xCollisionSpeed += ball.xSpeed*Math.cos(anguloThis)*Math.cos(anguloThis);
+      this.yCollisionSpeed += - changeDirection* Math.abs(ball.xSpeed)*Math.cos(anguloThis)*Math.sin(anguloThis);
+      ball.xCollisionSpeed += ball.xSpeed*Math.sin(anguloThis)*Math.cos(anguloBall);
+      ball.yCollisionSpeed += changeDirection* Math.abs(ball.xSpeed)*Math.sin(anguloThis)*Math.sin(anguloBall);
+    }
   }
 }
 
 Ball.prototype._collissionYSpeed = function(ball) {
-  var distance = 0;  
+  var distance = 0; 
+  var changeDirection = this._xCuadrantCollision(ball);
   if (this.collision && ball.ySpeed != 0){
-    distance = ball.xPos - this.xPos;
-    var anguloThis = Math.asin(distance/(2*this.radius));
-    var anguloBall = (Math.PI/2) - anguloThis;
-    this.yCollisionSpeed += ball.ySpeed*Math.cos(anguloThis)*Math.cos(anguloThis);
-    this.xCollisionSpeed += ball.ySpeed*Math.cos(anguloThis)*Math.sin(anguloThis);
-    ball.xCollisionSpeed += ball.ySpeed*Math.sin(anguloThis)*Math.sin(anguloBall);
-    ball.yCollisionSpeed += ball.ySpeed*Math.sin(anguloThis)*Math.cos(anguloBall);
+    if ((this._yCuadrantCollision(ball) === -1 && ball.ySpeed < 0) || 
+    (this._yCuadrantCollision(ball) === 1 && ball.ySpeed > 0)) {
+      ball.yCollisionSpeed += ball.xSpeed;
+    } else {
+      distance = Math.abs(ball.xPos - this.xPos);
+      var anguloThis = Math.asin(distance/(2*this.radius));
+      var anguloBall = (Math.PI/2) - anguloThis;
+      this.yCollisionSpeed += ball.ySpeed*Math.cos(anguloThis)*Math.cos(anguloThis);
+      this.xCollisionSpeed += - changeDirection * Math.abs(ball.ySpeed) * Math.cos(anguloThis) * Math.sin(anguloThis);
+      ball.xCollisionSpeed += changeDirection * Math.abs(ball.ySpeed)*Math.sin(anguloThis) * Math.sin(anguloBall);
+      ball.yCollisionSpeed += ball.ySpeed * Math.sin(anguloThis) * Math.cos(anguloBall);
+    }
   }
 }
 
@@ -87,4 +99,23 @@ Ball.prototype.speedAfterCollision = function() {
   this.ySpeed = this.yCollisionSpeed;
   this.xCollisionSpeed = 0;
   this.yCollisionSpeed = 0;
+}
+
+Ball.prototype._xCuadrantCollision = function(ball) {
+  if (this.xPos > ball.xPos) {
+    return -1;
+  } else if (this.xPos < ball.xPos) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+Ball.prototype._yCuadrantCollision = function(ball) {
+  if  (this.yPos > ball.yPos) {
+    return -1;
+  } else if (this.yPos < ball.yPos) { 
+    return 1;
+  } else {
+    return 0;
+  }
 }
