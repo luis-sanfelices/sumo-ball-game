@@ -125,3 +125,4 @@ Game.prototype._assignControlsToKeys = function() {
     }
   }.bind(this);
 };
+
