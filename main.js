@@ -1,6 +1,10 @@
 $(document).ready(function() {
     var game;
-    var canvas = document.getElementById("sumo-ball");
+    var canvas = document.createElement("canvas");
+    canvas.width = 800;
+    canvas.height = 800;
+    document.body.insertBefore(canvas, document.body.childNodes[0]);
+    //var canvas = document.getElementById("sumo-ball");
     var ctx = canvas.getContext("2d");
   
     game = new Game({

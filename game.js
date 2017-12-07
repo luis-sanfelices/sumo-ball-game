@@ -17,18 +17,17 @@ function Game(options) {
   };
 }
 Game.prototype._drawBoard = function() {
-  this.ctx.fillStyle = "black";
-  this.ctx.fill();
-  this.ctx.stroke();
-  this.ctx.fillStyle = "grey";
+  this.ctx.fillStyle = "grey";  
+  this.ctx.beginPath();
   this.ctx.arc(0, 0, this.radius, 0, 2 * Math.PI);
+  this.ctx.stroke();
   this.ctx.fill();
 };
 
 Game.prototype._drawBall = function(ball) {
   var character = new Image(); 
   character.src = "Imagenes/sprite_memes_" + ball.color + ".png";
-  var yPosFrame = 50 * ball.frame;
+  var yPosFrame = 52 * ball.frame;
   this.ctx.drawImage(character,0,yPosFrame,50,50,ball.xPos - ball.radius,ball.yPos - ball.radius,2*ball.radius,2*ball.radius);
 };
 
