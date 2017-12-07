@@ -26,11 +26,10 @@ Game.prototype._drawBoard = function() {
 };
 
 Game.prototype._drawBall = function(ball) {
-  this.ctx.beginPath();
-  this.ctx.fillStyle = ball.color;
-  this.ctx.arc(ball.xPos, ball.yPos, ball.radius, 0, 2 * Math.PI);
-  this.ctx.fill();
-  this.ctx.stroke();
+  var character = new Image(); 
+  character.src = "Imagenes/sprite_memes_" + ball.color + ".png";
+  var yPosFrame = 50 * ball.frame;
+  this.ctx.drawImage(character,0,yPosFrame,50,50,ball.xPos - ball.radius,ball.yPos - ball.radius,2*ball.radius,2*ball.radius);
 };
 
 Game.prototype.start = function() {

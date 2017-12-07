@@ -9,6 +9,7 @@ function Ball(options) {
   this.yCollisionSpeed = 0;
   this.distanceToCenter = 0;
   this.collision = false;
+  this.frame = options.frame;
 }
 
 Ball.prototype.move = function() {
