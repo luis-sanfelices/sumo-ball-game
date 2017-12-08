@@ -10,6 +10,10 @@ function Ball(options) {
   this.distanceToCenter = 0;
   this.collision = false;
   this.frame = options.frame;
+  this.distanceToCenter1 = 200;
+  this.distanceToBall1 = 400;
+  this.distanceToCenter2 = 200;
+  this.distanceToBall2 = 400;
 }
 
 Ball.prototype.move = function() {
@@ -36,20 +40,24 @@ Ball.prototype.changeSpeed = function(controls) {
   }
 };
 
-Ball.prototype._distanceToCenter = function() {
-  return Math.sqrt(Math.pow(this.xPos,2) + Math.pow(this.yPos,2));
+Ball.prototype.calculateDistanceToCenter = function() {
+  this.distanceToCenter2 = this.distanceToCenter1;
+  this.distanceToCenter1 =  Math.sqrt(Math.pow(this.xPos,2) + Math.pow(this.yPos,2));
 }
 
 Ball.prototype.outOfTheRing = function(radius) {
-  return this._distanceToCenter() > radius;
+  return this.distanceToCenter1 > radius;
 }
 
-Ball.prototype._distanceToBall = function(ball) {
-  return Math.sqrt(Math.pow((this.xPos-ball.xPos),2) + Math.pow((this.yPos-ball.yPos),2));
+Ball.prototype.calculateDistanceToBall = function(ball) {
+  this.distanceToBall2 = this.distanceToBall1;
+  this.distanceToBall1 =  Math.sqrt(Math.pow((this.xPos-ball.xPos),2) + Math.pow((this.yPos-ball.yPos),2));
+  ball.distanceToBall2 = ball.distanceToBall1;
+  ball.distanceToBall1 = this.distaceToBall1;
 }
 
-Ball.prototype.ballColision = function(ball) {
-  return this._distanceToBall(ball) <= 2*this.radius;
+Ball.prototype.ballColision = function() {
+  return this.distanceToBall1 <= 2*this.radius;
 }
 
 Ball.prototype._collisionXSpeed = function(ball) {
@@ -118,5 +126,19 @@ Ball.prototype._yCuadrantCollision = function(ball) {
     return 1;
   } else {
     return 0;
+  }
+}
+
+Ball.prototype._moveAwayFromBall = function() {
+  return this.distanceToBall1 > this.distanceToBall2;
+}
+
+Ball.prototype.changeFrame = function(radius, ball) {
+  if (this.xSpeed === 0 && this.ySpeed === 0 && ball.outOfTheRing(radius) ) {
+    this.frame = 0;
+  } else if ((this.xSpeed != 0 || this.ySpeed != 0) && ball.outOfTheRing(radius) ) {
+    this.frame = 9;
+  } else if (this._moveAwayFromBall() && ball.outOfTheRing()) {
+    this.frame = 1;
   }
 }

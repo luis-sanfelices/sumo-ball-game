@@ -32,22 +32,27 @@ Game.prototype._drawBall = function(ball) {
 };
 
 Game.prototype.start = function() {
-  this.ctx.translate(400, 400);
+  this.ctx.translate(300, 300);
   this._assignEvents();
-  window.requestAnimationFrame(this._update.bind(this));
+  this._update();
 };
 
 Game.prototype._update = function() {
-  this.ctx.clearRect(-400,-400,800,800);
+  this.ctx.clearRect(-300,-300,600,600);
   this._drawBoard();
   this._reduceRing();
+  this.ball1.calculateDistanceToCenter();
+  this.ball2.calculateDistanceToCenter();
+  this.ball1.calculateDistanceToBall(this.ball2);
   if (this.ball1.outOfTheRing(this.radius)) {
-    alert("blue wins");
+    this.ball1.xSpeed = 0;
+    this.ball1.ySpeed = 0;
   }
   if (this.ball2.outOfTheRing(this.radius)) {
-    alert("green wins");
+    this.ball2.xSpeed = 0;
+    this.ball2.ySpeed = 0;
   }
-  if (!this.ball1.collision && this.ball1.ballColision(this.ball2)) {
+  if (!this.ball1.collision && this.ball1.ballColision()) {
     this.ball1.collision = true;
     this.ball2.collision = true;
     this.ball1.collisionSpeed(this.ball2);
@@ -58,6 +63,8 @@ Game.prototype._update = function() {
     this.ball1.collision = false;
     this.ball2.collision = false;
   }
+  this.ball1.changeFrame(this.radius, this.ball2);
+  this.ball2.changeFrame(this.radius, this.ball1);
   this.ball1.move();
   this.ball2.move();
   this.ball1.changeSpeed(this.player1Controls);

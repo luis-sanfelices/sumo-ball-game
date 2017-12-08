@@ -1,0 +1,46 @@
+.header-container {
+    background: url(Imagenes/memes_background.png) no-repeat; 
+    width: 908px;
+    height: 568px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.header-container-board {
+    background: url(Imagenes/memes_background_board.png) no-repeat; 
+    width: 908px;
+    height: 256px;
+    margin: auto;
+}
+.board-container {
+    background: url(Imagenes/board_background.png) no-repeat; 
+    width: 908px;
+    height: 700px;
+    margin: auto;
+}
+#sumo-ball {
+    margin-left: 154px;
+    margin-top: 20px;
+}
+.start-button {
+    height: 25px;
+    font-size: 25px;
+    width: 100px;
+    text-align: center;
+    margin: 40px 80px;
+    padding: 20px;
+    background-color: rgb(255, 166, 0);
+    border-radius: 15px;
+    font-family: monospace;
+    color: white;
+    cursor: pointer;
+}
+
+.start-button:hover {
+    background-color: darkorange;
+}
+
+.hide {
+    visibility: hidden;
+}
