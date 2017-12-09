@@ -136,9 +136,9 @@ Ball.prototype._moveAwayFromBall = function() {
 Ball.prototype.changeFrame = function(radius, ball) {
   if (this.xSpeed === 0 && this.ySpeed === 0 && ball.outOfTheRing(radius) ) {
     this.frame = 0;
-  } else if ((this.xSpeed != 0 || this.ySpeed != 0) && ball.outOfTheRing(radius) ) {
+  } else if ( this.frame != 1 && (this.xSpeed != 0 || this.ySpeed != 0) && ball.outOfTheRing(radius) ) {
     this.frame = 9;
-  } else if (this._moveAwayFromBall() && ball.outOfTheRing()) {
+  } else if (this._moveAwayFromBall() && ball.distanceToCenter1 > 0.95*radius) {
     this.frame = 1;
   }
 }

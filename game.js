@@ -40,7 +40,7 @@ Game.prototype.start = function() {
 Game.prototype._update = function() {
   this.ctx.clearRect(-300,-300,600,600);
   this._drawBoard();
-  this._reduceRing();
+  //this._reduceRing();
   this.ball1.calculateDistanceToCenter();
   this.ball2.calculateDistanceToCenter();
   this.ball1.calculateDistanceToBall(this.ball2);

@@ -2,6 +2,8 @@ $(document).ready(function() {
 
     var game;
     var ctx;
+    var countDownId;
+    var counter = 3;
 
     $('.header-container').on('click','.start-button',function(){
         startGame();
@@ -10,10 +12,29 @@ $(document).ready(function() {
     function startGame() {
         hideInitialWindow();
         createCanvas();
+        countDownId = setInterval(countDown,1000);
         setTimeout(function() {
             createGame();
             game.start();
-            },3000);
+        },4000);
+        setTimeout(function(){
+            clearInterval(countDownId);
+        },5000);
+    }
+
+    function countDown() { 
+        ctx.clearRect(0,0,600,600);
+        if (counter === 0) {
+            ctx.font = "100px monospace";
+            ctx.fillText("START",300,300);
+        } else if (counter > 0) {
+            ctx.font = "100px Arial";
+            ctx.fillText(counter,300,300);
+        } else {
+            ctx.font = "100px Arial";
+            ctx.fillText("",300,300);
+        }
+        counter--;
     }
 
     function hideInitialWindow() {
@@ -24,11 +45,11 @@ $(document).ready(function() {
 
     function createCanvas() {
         $('#board-container').append(`<canvas id='sumo-ball' width='600' height='600'>` );
+        var canvas = document.getElementById('sumo-ball');
+        ctx = canvas.getContext("2d");
     }
 
     function createGame() {
-        var canvas = document.getElementById('sumo-ball');
-        ctx = canvas.getContext("2d");
         game = new Game({
             ball1: new Ball({radius:25,xPos:0,yPos:-200, color:"green", frame:10}),
             ball2: new Ball({radius:25,xPos:0,yPos:200, color:"blue", frame:10}),
