@@ -10,10 +10,9 @@ function Ball(options) {
   this.distanceToCenter = 0;
   this.collision = false;
   this.frame = options.frame;
-  this.distanceToCenter1 = 200;
-  this.distanceToBall1 = 400;
-  this.distanceToCenter2 = 200;
-  this.distanceToBall2 = 400;
+  this.distanceToCenter = 200;
+  this.distanceToBall = 400;
+
 }
 
 Ball.prototype.move = function() {
@@ -41,23 +40,20 @@ Ball.prototype.changeSpeed = function(controls) {
 };
 
 Ball.prototype.calculateDistanceToCenter = function() {
-  this.distanceToCenter2 = this.distanceToCenter1;
-  this.distanceToCenter1 =  Math.sqrt(Math.pow(this.xPos,2) + Math.pow(this.yPos,2));
+  this.distanceToCenter =  Math.sqrt(Math.pow(this.xPos,2) + Math.pow(this.yPos,2));
 }
 
 Ball.prototype.outOfTheRing = function(radius) {
-  return this.distanceToCenter1 > radius;
+  return this.distanceToCenter > radius;
 }
 
 Ball.prototype.calculateDistanceToBall = function(ball) {
-  this.distanceToBall2 = this.distanceToBall1;
-  this.distanceToBall1 =  Math.sqrt(Math.pow((this.xPos-ball.xPos),2) + Math.pow((this.yPos-ball.yPos),2));
-  ball.distanceToBall2 = ball.distanceToBall1;
-  ball.distanceToBall1 = this.distaceToBall1;
+  this.distanceToBall =  Math.sqrt(Math.pow((this.xPos-ball.xPos),2) + Math.pow((this.yPos-ball.yPos),2));
+  ball.distanceToBall = this.distanceToBall;
 }
 
 Ball.prototype.ballColision = function() {
-  return this.distanceToBall1 <= 2*this.radius;
+  return this.distanceToBall <= 2*this.radius;
 }
 
 Ball.prototype._collisionXSpeed = function(ball) {
@@ -129,16 +125,20 @@ Ball.prototype._yCuadrantCollision = function(ball) {
   }
 }
 
-Ball.prototype._moveAwayFromBall = function() {
-  return this.distanceToBall1 > this.distanceToBall2;
-}
-
 Ball.prototype.changeFrame = function(radius, ball) {
   if (this.xSpeed === 0 && this.ySpeed === 0 && ball.outOfTheRing(radius) ) {
     this.frame = 0;
+  } else if (this.xSpeed != 0 && this.ySpeed != 0 && ball.outOfTheRing(radius) ) {
+    this.frame = 1;
+  } else if (this.distanceToBall > 300 && ball.distanceToCenter <= 0.75*radius && this.distanceToCenter <= 0.75*radius){
+    this.frame = 10;
+  } else if (ball.distanceToCenter > 0.9 && this.distanceToCenter < 0.75*radius ) {
+    this.frame = 3;
+  } else if (this.distanceToCenter > 0.9*radius) {
+    this.frame = 2;
+  } else if (this.distanceToCenter >= 0.75*radius) {
+    this.frame = 4;
   } else if ( this.frame != 1 && (this.xSpeed != 0 || this.ySpeed != 0) && ball.outOfTheRing(radius) ) {
     this.frame = 9;
-  } else if (this._moveAwayFromBall() && ball.distanceToCenter1 > 0.95*radius) {
-    this.frame = 1;
   }
 }

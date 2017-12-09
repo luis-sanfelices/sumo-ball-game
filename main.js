@@ -8,7 +8,10 @@ $(document).ready(function() {
     $('.header-container').on('click','.start-button',function(){
         startGame();
        });
-
+    $('.header-container').on('click','.back-button',function(){
+        backToInit();
+    });
+    
     function startGame() {
         hideInitialWindow();
         createCanvas();
@@ -16,23 +19,18 @@ $(document).ready(function() {
         setTimeout(function() {
             createGame();
             game.start();
-        },4000);
-        setTimeout(function(){
             clearInterval(countDownId);
-        },5000);
+        },4000);
     }
 
     function countDown() { 
         ctx.clearRect(0,0,600,600);
-        if (counter === 0) {
+        if (counter > 0) {
             ctx.font = "100px monospace";
-            ctx.fillText("START",300,300);
-        } else if (counter > 0) {
-            ctx.font = "100px Arial";
-            ctx.fillText(counter,300,300);
+            ctx.fillText(counter,280,250);
         } else {
-            ctx.font = "100px Arial";
-            ctx.fillText("",300,300);
+            ctx.font = "100px monospace";
+            ctx.fillText("",280,250);
         }
         counter--;
     }
