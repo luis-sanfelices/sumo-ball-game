@@ -27,10 +27,10 @@ $(document).ready(function() {
         ctx.clearRect(0,0,600,600);
         if (counter > 0) {
             ctx.font = "100px monospace";
-            ctx.fillText(counter,280,250);
+            ctx.fillText(counter,330,300);
         } else {
             ctx.font = "100px monospace";
-            ctx.fillText("",280,250);
+            ctx.fillText("",330,300);
         }
         counter--;
     }
@@ -42,7 +42,7 @@ $(document).ready(function() {
     }
 
     function createCanvas() {
-        $('#board-container').append(`<canvas id='sumo-ball' width='600' height='600'>` );
+        $('#board-container').append(`<canvas id='sumo-ball' width='700' height='700'>` );
         var canvas = document.getElementById('sumo-ball');
         ctx = canvas.getContext("2d");
     }

@@ -16,13 +16,15 @@ function Game(options) {
     right: false
   };
   this.finishGameTimeout = undefined;
+  this.sawFrame = 0;
+  this.sawAngle = 0;
 }
 Game.prototype._drawBoard = function() {
-  this.ctx.fillStyle = "grey";  
+  this.ctx.lineWidth = 10;
   this.ctx.beginPath();
   this.ctx.arc(0, 0, this.radius, 0, 2 * Math.PI);
   this.ctx.stroke();
-  this.ctx.fill();
+
 };
 
 Game.prototype._drawBall = function(ball) {
@@ -32,14 +34,37 @@ Game.prototype._drawBall = function(ball) {
   this.ctx.drawImage(character,0,yPosFrame,50,50,ball.xPos - ball.radius,ball.yPos - ball.radius,2*ball.radius,2*ball.radius);
 };
 
+Game.prototype._drawSaw = function() {
+  var saw = new Image(); 
+  saw.src = "Imagenes/spriteSierra.png";
+  var xPos = 52 * this.sawFrame;
+  this.ctx.drawImage(saw,xPos,0,50,50,this.radius*Math.cos(this.sawAngle) - 25,this.radius*Math.sin(this.sawAngle) - 25,50,50);
+  this.ctx.drawImage(saw,xPos,0,50,50,this.radius*Math.cos((this.sawAngle-1.5)/0.5) - 25,this.radius*Math.sin((this.sawAngle-1.5)/0.5) - 25,50,50);
+  this.ctx.drawImage(saw,xPos,0,50,50,this.radius*Math.cos(-this.sawAngle/0.7) - 25,this.radius*Math.sin(-this.sawAngle/0.7) - 25,50,50);
+  this.ctx.drawImage(saw,xPos,0,50,50,this.radius*Math.cos(-this.sawAngle-0.75) - 25,this.radius*Math.sin(-this.sawAngle-0.75) - 25,50,50);
+  this.ctx.drawImage(saw,xPos,0,50,50,this.radius*Math.cos(-this.sawAngle-2) - 25,this.radius*Math.sin(-this.sawAngle-2) - 25,50,50);
+  this.ctx.drawImage(saw,xPos,0,50,50,this.radius*Math.cos((this.sawAngle+3)/0.4) - 25,this.radius*Math.sin((this.sawAngle+3)/0.4)- 25,50,50);
+}
+
+Game.prototype._changeSawAngle = function() {
+  this.sawAngle += 0.005;
+}
+
+Game.prototype._changeSawFrame = function() {
+  setInterval(function(){
+    this.sawFrame = this.sawFrame === 0 ? 1 : 0;
+  },500);
+}
+
 Game.prototype.start = function() {
-  this.ctx.translate(300, 300);
+  this.ctx.translate(350, 350);
   this._assignEvents();
+  this._changeSawFrame();
   this._update();
 };
 
 Game.prototype._update = function() {
-  this.ctx.clearRect(-300,-300,600,600);
+  this.ctx.clearRect(-350,-350,700,700);
   this._drawBoard();
   this._reduceRing();
   this.ball1.calculateDistanceToCenter();
@@ -78,6 +103,8 @@ Game.prototype._update = function() {
   this.ball2.changeSpeed(this.player2Controls);
   this._drawBall(this.ball1);
   this._drawBall(this.ball2);
+  this._drawSaw();
+  this._changeSawAngle();
   this.animationId = window.requestAnimationFrame(this._update.bind(this));
 };
 
