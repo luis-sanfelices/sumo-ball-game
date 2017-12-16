@@ -20,7 +20,7 @@ function Game(options) {
   this.sawAngle = 0;
 }
 Game.prototype._drawBoard = function() {
-  this.ctx.lineWidth = 10;
+  this.ctx.lineWidth = 5;
   this.ctx.beginPath();
   this.ctx.arc(0, 0, this.radius, 0, 2 * Math.PI);
   this.ctx.stroke();
@@ -39,11 +39,6 @@ Game.prototype._drawSaw = function() {
   saw.src = "Imagenes/spriteSierra.png";
   var xPos = 52 * this.sawFrame;
   this.ctx.drawImage(saw,xPos,0,50,50,this.radius*Math.cos(this.sawAngle) - 25,this.radius*Math.sin(this.sawAngle) - 25,50,50);
-  this.ctx.drawImage(saw,xPos,0,50,50,this.radius*Math.cos((this.sawAngle-1.5)/0.5) - 25,this.radius*Math.sin((this.sawAngle-1.5)/0.5) - 25,50,50);
-  this.ctx.drawImage(saw,xPos,0,50,50,this.radius*Math.cos(-this.sawAngle/0.7) - 25,this.radius*Math.sin(-this.sawAngle/0.7) - 25,50,50);
-  this.ctx.drawImage(saw,xPos,0,50,50,this.radius*Math.cos(-this.sawAngle-0.75) - 25,this.radius*Math.sin(-this.sawAngle-0.75) - 25,50,50);
-  this.ctx.drawImage(saw,xPos,0,50,50,this.radius*Math.cos(-this.sawAngle-2) - 25,this.radius*Math.sin(-this.sawAngle-2) - 25,50,50);
-  this.ctx.drawImage(saw,xPos,0,50,50,this.radius*Math.cos((this.sawAngle+3)/0.4) - 25,this.radius*Math.sin((this.sawAngle+3)/0.4)- 25,50,50);
 }
 
 Game.prototype._changeSawAngle = function() {
@@ -57,14 +52,14 @@ Game.prototype._changeSawFrame = function() {
 }
 
 Game.prototype.start = function() {
-  this.ctx.translate(350, 350);
+  this.ctx.translate(350, 360);
   this._assignEvents();
   this._changeSawFrame();
   this._update();
 };
 
 Game.prototype._update = function() {
-  this.ctx.clearRect(-350,-350,700,700);
+  this.ctx.clearRect(-350,-360,700,700);
   this._drawBoard();
   this._reduceRing();
   this.ball1.calculateDistanceToCenter();
@@ -156,7 +151,7 @@ Game.prototype._finishGame = function() {
     this.ctx.fillText("Draw",-30,0);
   } else if (this.ball1.outOfTheRing && !this.ball2.outOfTheRing(this.radius)) {
     this._setZeroSpeed(this.ball2);
-    this.ctx.fillText("Player 1 wins",-100,0);
+    this.ctx.fillText("Player 2 wins",-100,0);
   } else {
     this._setZeroSpeed(this.ball1);
     this.ctx.fillText("Player 1 wins",-100,0);    
@@ -185,4 +180,8 @@ Game.prototype.startAgain = function() {
 Game.prototype._setZeroSpeed = function(ball) {
   ball.xSpeed = 0;
   ball.ySpeed = 0;
+}
+
+Game.prototype.stop = function() {
+  window.cancelAnimationFrame(this.animationId );
 }
